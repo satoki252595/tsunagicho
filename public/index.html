@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="スマホとマイクの接続・設定を、公式資料とともに確認。つなぎ帳の体験版です。">
+  <meta name="robots" content="noindex,nofollow"><title>つなぎ帳 — そのマイク、あなたのスマホで使える？</title>
+  <link rel="stylesheet" href="/style.css"><script type="module" src="/app.mjs"></script>
+</head>
+<body>
+<a class="skip" href="#finder">接続ガイドを探す</a>
+<header class="site-header shell"><a class="brand" href="/"><span class="brand-mark" aria-hidden="true">↔</span>つなぎ帳<span class="beta">体験版</span></a><nav aria-label="メイン"><a href="#guides">使い方から探す</a><a href="/shops.html">販売店の方へ <span aria-hidden="true">↗</span></a></nav></header>
+<main>
+  <section class="hero shell">
+    <div class="hero-copy"><p class="eyebrow"><span class="dot"></span> スマホ × マイクの接続ガイド</p><h1>そのマイク、<br>あなたのスマホで<br><span>使える？</span></h1><p class="lead">端子も、設定も、つなぎ方も。<br>買う前の「分からない」を、一つずつ。</p><a class="button primary" href="#finder">手持ちの組み合わせを調べる <span aria-hidden="true">↓</span></a><p class="fine">登録不要・無料で試せます</p></div>
+    <div class="hero-board" aria-hidden="true"><div class="board-top"><span>CONNECTION NOTE</span><span>01 / AUDIO</span></div><div class="device-scene"><div class="phone-drawing"><div class="phone-notch"></div><div class="phone-screen"><div class="viewfinder">REC <i></i></div><div class="wave">▂ ▅ ▃ ▇ ▄ ▆ ▂</div><div class="screen-label">あなたのスマホ</div></div></div><div class="connection-line"><span>········</span><b>＋</b><span>········</span></div><div class="mic-drawing"><div class="mic-grill"></div><span>MIC</span><i></i></div></div><div class="board-note"><span class="note-symbol">↳</span><div><strong>形が合っても、条件はいろいろ。</strong><p>アプリと接続方法まで、一緒に確認。</p></div></div><div class="board-tags"><span>接続方法</span><span>必要なもの</span><span>公式の根拠</span></div></div>
+  </section>
+  <section id="finder" class="finder shell" aria-labelledby="finder-title">
+    <div class="section-heading"><div><p class="eyebrow">FIND YOUR CONNECTION</p><h2 id="finder-title">まずは、組み合わせから。</h2></div><span class="step-caption">4つ選んで確認</span></div>
+    <form id="search-form"><div class="form-grid">
+      <label><span class="field-label"><b>01</b> スマホの端子</span><select name="phone" id="phone" required><option value="">選んでください</option></select></label>
+      <label><span class="field-label"><b>02</b> マイク</span><select name="mic" id="mic" required><option value="">選んでください</option></select></label>
+      <label><span class="field-label"><b>03</b> つなぎ方</span><select name="connection" id="connection" required><option value="">選んでください</option></select></label>
+      <label><span class="field-label"><b>04</b> 使いたいアプリ</span><select name="app" id="app" required><option value="">選んでください</option></select></label>
+    </div><div class="form-footer"><p>初代DJI Mic Mini・RØDE Wireless Microの一部の接続に対応。<br>個別機種での動作を保証する判定ではありません。</p><button class="button primary" type="submit">確認ポイントを見る <span aria-hidden="true">→</span></button></div></form>
+    <p id="change-notice" role="status" class="fine"></p>
+    <section id="result" class="result" aria-labelledby="result-title" hidden><p id="result-status" class="status-tag"></p><h3 id="result-title" tabindex="-1"></h3><p id="result-selection" class="fine"></p><p id="result-condition" class="notice" hidden></p><p id="result-summary"></p><ol id="connection-path" class="path"></ol><div class="result-columns"><div><h4>次に確認すること</h4><ol id="result-steps" class="steps"></ol></div><aside><h4>この情報の根拠</h4><div id="result-sources"></div><p id="result-date" class="fine"></p><p class="fine">つなぎ帳による実機確認：未実施<br>型番・OS・アプリ版ごとの確認が必要です。</p></aside></div><p id="result-caution" class="notice"></p><div class="actions"><button id="save-answer" class="button secondary" type="button">この組み合わせを保存</button><button id="download-answer" class="text-button" type="button">確認メモをダウンロード ↗</button><button id="copy-link" class="text-button" type="button">リンクをコピー</button></div><p id="answer-message" class="fine" role="status"></p></section>
+  </section>
+  <section id="guides" class="shell guides" aria-labelledby="guides-title"><div class="section-heading"><div><p class="eyebrow">START WITH A QUESTION</p><h2 id="guides-title">やりたいことから、探す。</h2></div><p class="fine">公式資料をもとにした確認ガイド</p></div><div id="example-list" class="card-grid"></div></section>
+  <section class="shell notebook" aria-labelledby="saved-title"><div><p class="eyebrow">MY CONNECTIONS</p><h2 id="saved-title">自分のつなぎ帳。</h2><p class="fine">保存先はこのブラウザだけ。いつでも再確認できます。</p></div><div id="saved-list"><p class="empty-note">気になる組み合わせを保存すると、ここに並びます。</p></div></section>
+  <section class="shell principles"><div><span>01</span><h3>根拠から、確かめる。</h3><p>ガイドには公式資料へのリンクを添えています。細かな条件は元の資料でも確認できます。</p></div><div><span>02</span><h3>分からないは、そのまま。</h3><p>未検証の組み合わせを「使える」とは表示しません。確認に必要な情報を整理します。</p></div><div><span>03</span><h3>次の確認に、持っていく。</h3><p>型番や設定を伝えるための確認メモを、購入前の相談や手元の検証に使えます。</p></div></section>
+  <section class="shell shop-banner"><div><p class="eyebrow">FOR SHOPS</p><h2>その質問、<br>一度の回答を次にも。</h2><p>商品ページで接続条件を案内し、<br>購入前後の問い合わせを減らす試みです。</p></div><a class="button secondary" href="/shops.html">販売店向けの体験を見る ↗</a></section>
+</main>
+<footer class="shell site-footer"><a class="brand" href="/">↔ つなぎ帳</a><p>接続ガイドの体験版 · 2026.09<br>資料確認日と実機確認日は分けて表示します。</p><a href="/shops.html#privacy">データの取り扱い</a></footer>
+<noscript><p class="shell notice">接続ガイドの検索にはJavaScriptが必要です。販売店向けページの資料リンクもご利用ください。</p></noscript>
+</body></html>
