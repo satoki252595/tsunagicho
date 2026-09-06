@@ -1,5 +1,49 @@
 # ローカル検証と公開記録
 
+## 2026-09-06: GitHub Pages 本番公開
+
+公開 URL: [購入者向け](https://tsunagicho.banchi.app/) / [店舗向けの事業仮説・デモ](https://tsunagicho.banchi.app/shops.html)。ユーザー承認に従い、リポジトリを公開し、無料の静的体験版を配備した。プランのアップグレード、実決済、店舗契約の販売は行っていない。
+
+| 項目 | 結果 |
+|---|---|
+| ソース | [PR #4](https://github.com/satoki252595/tsunagicho/pull/4) を main へ squash merge。配備 SHA `bd678789e7e742051263a5b43ca69a4af524f086` |
+| 配備 | [Actions run 34015940442](https://github.com/satoki252595/tsunagicho/actions/runs/34015940442)。2026-09-06 15:13:55 JST に deploy job 成功 |
+| 公開範囲 | repo は public。Pages Source は GitHub Actions、配信 artifact は `public/` のみ |
+| DNS | `tsunagicho.banchi.app` → `satoki252595.github.io` の CNAME（TTL 300）。1.1.1.1 / 8.8.8.8 で一致 |
+| 所有確認 | GitHub の実際の challenge TXT を banchi に設定して検証成功。`protected_domain_state: verified` |
+| 証明書 | GitHub `approved`、対象 `tsunagicho.banchi.app`、期限 2026-12-05。15:18 JST に標準の証明書検証で HTTPS 200 を確認し、`https_enforced: true` を有効化 |
+| HTTPS 強制 | 15:25:18 JST、HTTP の `/` が301で `https://tsunagicho.banchi.app/` へ転送されることを確認 |
+| Pages health | CNAME が GitHub ユーザードメインを指し、`is_proxied: false`、非 GitHub IP なし、HTTPS eligible / responds は true。CAA / HTTPS error なし |
+
+初回 DNS チェックでは GitHub health が CNAME を見つけられず、以前の A/proxy 相当の判定を返した。設定を変更せず待機すると、CNAME の正常判定と証明書承認に移った。banchi.app の CAA は未設定で、CNAME の参照先は letsencrypt.org / digicert.com / sectigo.com を許可していたため、CAA の変更は行っていない。
+
+HTTPS 強制の有効化後、トップページには設定前の HTTP 200 が `Age` の増える600秒キャッシュとして残った。未取得のパスは先に301へ移り、トップもキャッシュ期限後に301になった。Pages health の `enforces_https` は遅延するため、設定 API の true に加え、実際の HTTP レスポンスで確認した。
+
+### 本番配信の検証
+
+- `/`、`/shops.html`、`/style.css`、`/app.mjs`、`/catalog.mjs` は HTTPS 200。HTML / CSS / JavaScript の MIME が正しく、レスポンス本文は配備ソースと完全一致した。
+- `/AGENTS.md`、`/docs/release.md`、`/.git/config`、`/.env`、未知パスは404。文書は GitHub repo では公開されるが、Pages の Web 配信対象には含まれない。
+- 両 HTML で CSP meta と `referrer=no-referrer` を確認。Pages のレスポンスに CSP / X-Content-Type-Options / Permissions-Policy / HSTS はなく、Cache-Control は `max-age=600`。Cloudflare の `_headers` が適用されたとは扱わない。
+
+### 本番ブラウザの実動作
+
+上記の配備 SHA を、Chrome の実幅3440pxと375pxで確認した。追加のアプリ修正は不要だった。
+
+| 操作 | 結果 |
+|---|---|
+| 未選択の検索 | 必須のスマホ欄へフォーカス。用途カードからは「資料あり・実機未検証」の結果へ進む |
+| 保存 | 保存→再読込で復元、同じ条件の重複保存は拒否。削除→再読込で空になる |
+| 条件変更・未知条件 | 変更直後に古い結果と URL の条件を解除。Enter で再検索し、未知マイクは未確認表示と結果見出しへのフォーカス |
+| 共有 | コピー成功後、その URL を別の375pxタブで開き同じ条件を復元。不正な共有 URL は選び直し案内と結果非表示 |
+| 確認メモ | dialog 表示とコピー成功。新規ダウンロード `tsunagicho-checklist (1).txt`（15:20:43 JST、1,272 bytes）もファイル上で対象条件・実機未検証・公式出典を確認。既存ファイルは保持 |
+| 店舗の試算・埋め込み | 問い合わせ0件で削減額0円、仮価格との差は−4,980円。同一サイト iframe 内のマイクを変更して未知条件の結果へ進む |
+| 店舗の検証メモ | 空欄は機種の必須欄へフォーカス。架空 QA 入力の出力は `owner-report-unreviewed` / `private-draft` / `reviewedAt: null` / `result: unknown` / `sharingPermission: not-granted` |
+| モバイル・エラー | トップ・検索結果・店舗画面の375px表示に横はみ出しなし。確認した両タブの console error / warn は0 |
+
+試験用のブラウザ保存は UI から削除し、架空の入力は再読込で消去した。架空の検証メモの外部送信、顧客への連絡、実機音声試験、実決済は行っていない。共有 URL と配信アクセスに関する GitHub Pages への通信は、上記の公開範囲・情報取扱の説明どおり。
+
+この節以降の準備・ローカル検証記録は、当時の状態として保存する。文書だけの追記は手動 workflow を起動せず、上記 SHA の `public/` を配信し続ける。
+
 ## 2026-09-06: GitHub Pages / banchi の公開準備
 
 関連: [Issue #3](https://github.com/satoki252595/tsunagicho/issues/3)。準備ブランチは `codex/github-pages-preparation`。この節の記入時点では、repo 公開化・Pages 有効化・本番配備は未実施。
