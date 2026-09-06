@@ -12,7 +12,7 @@ function download(name, text, type = 'text/plain;charset=utf-8') {
   link.href = url; link.download = name; link.textContent = 'ファイルを保存'; link.className = 'button primary';
   const copy = document.createElement('button'); copy.type = 'button'; copy.className = 'button secondary'; copy.textContent = '内容をコピー';
   const status = document.createElement('p'); status.className = 'fine'; status.setAttribute('role', 'status');
-  copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(text); status.textContent = '内容をコピーしました。'; } catch { preview.select(); status.textContent = '内容を選択しました。端末のコピー操作をご利用ください。'; } });
+  copy.addEventListener('click', async () => { try { await navigator.clipboard.writeText(text); status.textContent = '内容をコピーしました。'; } catch { preview.focus(); preview.select(); status.textContent = '自動コピーを利用できないため、内容を選択しました。端末のコピー操作か「ファイルを保存」をご利用ください。'; } });
   const close = document.createElement('button'); close.type = 'button'; close.className = 'text-button'; close.textContent = '閉じる'; close.addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => { URL.revokeObjectURL(url); dialog.remove(); });
   actions.append(link, copy, close); dialog.append(title, note, preview, actions, status); document.body.append(dialog); dialog.showModal();
@@ -107,8 +107,8 @@ if ($('search-form')) {
     if (persist([...saved, current.selection])) { renderSaved(); $('answer-message').textContent = 'このブラウザに保存しました。端末間での同期や外部送信はありません。'; }
   });
   $('copy-link').addEventListener('click', async () => {
-    try { await navigator.clipboard.writeText(location.href); $('answer-message').textContent = '組み合わせのリンクをコピーしました。ローカル版のリンクはこのMacでのみ開けます。'; }
-    catch { $('answer-message').textContent = 'コピーできませんでした。ブラウザのアドレスをコピーしてください。'; }
+    try { await navigator.clipboard.writeText(location.href); $('answer-message').textContent = '組み合わせのリンクをコピーしました。'; }
+    catch { download('tsunagicho-link.txt', location.href); $('answer-message').textContent = '自動コピーを利用できません。開いた画面からリンクを保存するか、選択してコピーしてください。'; }
   });
   examples.forEach(example => {
     const card = document.createElement('button'); card.type = 'button'; card.className = 'example-card';
