@@ -25,6 +25,23 @@ HTTPS 強制の有効化後、トップページには設定前の HTTP 200 が 
 - `/AGENTS.md`、`/docs/release.md`、`/.git/config`、`/.env`、未知パスは404。文書は GitHub repo では公開されるが、Pages の Web 配信対象には含まれない。
 - 両 HTML で CSP meta と `referrer=no-referrer` を確認。Pages のレスポンスに CSP / X-Content-Type-Options / Permissions-Policy / HSTS はなく、Cache-Control は `max-age=600`。Cloudflare の `_headers` が適用されたとは扱わない。
 
+### 本番ブラウザの実動作
+
+上記の配備 SHA を、Chrome の実幅3440pxと375pxで確認した。追加のアプリ修正は不要だった。
+
+| 操作 | 結果 |
+|---|---|
+| 未選択の検索 | 必須のスマホ欄へフォーカス。用途カードからは「資料あり・実機未検証」の結果へ進む |
+| 保存 | 保存→再読込で復元、同じ条件の重複保存は拒否。削除→再読込で空になる |
+| 条件変更・未知条件 | 変更直後に古い結果と URL の条件を解除。Enter で再検索し、未知マイクは未確認表示と結果見出しへのフォーカス |
+| 共有 | コピー成功後、その URL を別の375pxタブで開き同じ条件を復元。不正な共有 URL は選び直し案内と結果非表示 |
+| 確認メモ | dialog 表示とコピー成功。新規ダウンロード `tsunagicho-checklist (1).txt`（15:20:43 JST、1,272 bytes）もファイル上で対象条件・実機未検証・公式出典を確認。既存ファイルは保持 |
+| 店舗の試算・埋め込み | 問い合わせ0件で削減額0円、仮価格との差は−4,980円。同一サイト iframe 内のマイクを変更して未知条件の結果へ進む |
+| 店舗の検証メモ | 空欄は機種の必須欄へフォーカス。架空 QA 入力の出力は `owner-report-unreviewed` / `private-draft` / `reviewedAt: null` / `result: unknown` / `sharingPermission: not-granted` |
+| モバイル・エラー | トップ・検索結果・店舗画面の375px表示に横はみ出しなし。確認した両タブの console error / warn は0 |
+
+試験用のブラウザ保存は UI から削除し、架空の入力は再読込で消去した。架空の検証メモの外部送信、顧客への連絡、実機音声試験、実決済は行っていない。共有 URL と配信アクセスに関する GitHub Pages への通信は、上記の公開範囲・情報取扱の説明どおり。
+
 この節以降の準備・ローカル検証記録は、当時の状態として保存する。文書だけの追記は手動 workflow を起動せず、上記 SHA の `public/` を配信し続ける。
 
 ## 2026-09-06: GitHub Pages / banchi の公開準備
