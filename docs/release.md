@@ -1,5 +1,32 @@
 # ローカル検証と公開記録
 
+## 2026-09-06: GitHub Pages 本番公開
+
+公開 URL: [購入者向け](https://tsunagicho.banchi.app/) / [店舗向けの事業仮説・デモ](https://tsunagicho.banchi.app/shops.html)。ユーザー承認に従い、リポジトリを公開し、無料の静的体験版を配備した。プランのアップグレード、実決済、店舗契約の販売は行っていない。
+
+| 項目 | 結果 |
+|---|---|
+| ソース | [PR #4](https://github.com/satoki252595/tsunagicho/pull/4) を main へ squash merge。配備 SHA `bd678789e7e742051263a5b43ca69a4af524f086` |
+| 配備 | [Actions run 34015940442](https://github.com/satoki252595/tsunagicho/actions/runs/34015940442)。2026-09-06 15:13:55 JST に deploy job 成功 |
+| 公開範囲 | repo は public。Pages Source は GitHub Actions、配信 artifact は `public/` のみ |
+| DNS | `tsunagicho.banchi.app` → `satoki252595.github.io` の CNAME（TTL 300）。1.1.1.1 / 8.8.8.8 で一致 |
+| 所有確認 | GitHub の実際の challenge TXT を banchi に設定して検証成功。`protected_domain_state: verified` |
+| 証明書 | GitHub `approved`、対象 `tsunagicho.banchi.app`、期限 2026-12-05。15:18 JST に標準の証明書検証で HTTPS 200 を確認し、`https_enforced: true` を有効化 |
+| HTTPS 強制 | 15:25:18 JST、HTTP の `/` が301で `https://tsunagicho.banchi.app/` へ転送されることを確認 |
+| Pages health | CNAME が GitHub ユーザードメインを指し、`is_proxied: false`、非 GitHub IP なし、HTTPS eligible / responds は true。CAA / HTTPS error なし |
+
+初回 DNS チェックでは GitHub health が CNAME を見つけられず、以前の A/proxy 相当の判定を返した。設定を変更せず待機すると、CNAME の正常判定と証明書承認に移った。banchi.app の CAA は未設定で、CNAME の参照先は letsencrypt.org / digicert.com / sectigo.com を許可していたため、CAA の変更は行っていない。
+
+HTTPS 強制の有効化後、トップページには設定前の HTTP 200 が `Age` の増える600秒キャッシュとして残った。未取得のパスは先に301へ移り、トップもキャッシュ期限後に301になった。Pages health の `enforces_https` は遅延するため、設定 API の true に加え、実際の HTTP レスポンスで確認した。
+
+### 本番配信の検証
+
+- `/`、`/shops.html`、`/style.css`、`/app.mjs`、`/catalog.mjs` は HTTPS 200。HTML / CSS / JavaScript の MIME が正しく、レスポンス本文は配備ソースと完全一致した。
+- `/AGENTS.md`、`/docs/release.md`、`/.git/config`、`/.env`、未知パスは404。文書は GitHub repo では公開されるが、Pages の Web 配信対象には含まれない。
+- 両 HTML で CSP meta と `referrer=no-referrer` を確認。Pages のレスポンスに CSP / X-Content-Type-Options / Permissions-Policy / HSTS はなく、Cache-Control は `max-age=600`。Cloudflare の `_headers` が適用されたとは扱わない。
+
+この節以降の準備・ローカル検証記録は、当時の状態として保存する。文書だけの追記は手動 workflow を起動せず、上記 SHA の `public/` を配信し続ける。
+
 ## 2026-09-06: GitHub Pages / banchi の公開準備
 
 関連: [Issue #3](https://github.com/satoki252595/tsunagicho/issues/3)。準備ブランチは `codex/github-pages-preparation`。この節の記入時点では、repo 公開化・Pages 有効化・本番配備は未実施。
