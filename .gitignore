@@ -1,5 +1,11 @@
+# Local credentials must never be committed or included in the Pages artifact.
 .env*
 .dev.vars*
+*.pem
+*.key
+*.p12
+*.pfx
+.npmrc
 .wrangler/
 .runtime/
 node_modules/

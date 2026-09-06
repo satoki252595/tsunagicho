@@ -1,13 +1,13 @@
 # つなぎ帳
 
 - スマホと外付けマイクの接続・設定を根拠とともに探す事業。2026-09-05に事業化着手をユーザー承認。実装対象は需要検証用体験版。
-- 企画、調査/出典、要件、デザイン、事業計画、集客/販売、運用、検証、意思決定とコードをこの専用private GitHub repoで管理。作業はIssues、変更はコミット/必要時PRで追跡。秘密情報・顧客個人情報はGitに保存しない。
+- 企画、調査/出典、要件、デザイン、事業計画、集客/販売、運用、検証、意思決定とコードをこの専用 GitHub repo で管理。2026-09-06、GitHub Pages を利用するため文書・履歴を含む repo の公開化をユーザーが承認。作業はIssues、変更はコミット/必要時PRで追跡。秘密情報・顧客個人情報はGitに保存せず、`.env*` / `.dev.vars*` / 秘密鍵等の ignore を維持する。
 - ローカルは `/Users/satoki252595/projects/tsunagicho/`。他サービスを同居させない。Officeは横断台帳と参照だけ。既存フォルダやrepoを重複作成・一括移行しない。
 - 追加費用0円。既存AI契約包含枠を優先し、従量API・on-demand・追加購入へ切り替えない。個人向けOAuthを顧客向け推論APIへ転用しない。
-- 公開（外部preview含む）、本番変更、デプロイ起動push、顧客連絡、実決済、課金有効化には具体的な候補を用意してユーザー確認。private repoへの通常保存は承認済み。定期実行・新規Codexタスクは作らない。
+- 公開（外部preview含む）、本番変更、デプロイ起動push、顧客連絡、実決済、課金有効化には具体的な候補を用意してユーザー確認。既に明示承認された範囲は再確認せず進める。2026-09-06 の承認範囲は無料の静的体験版を GitHub Pages / banchi サブドメインで公開すること。店舗サービスの販売、実決済、追加課金、顧客への連絡は含まない。repo への通常保存は承認済み。定期実行・新規Codexタスクは作らない。
 - 依存・環境はプロジェクトNix。実現不可の場合はユーザーへ相談し、グローバルpip/npm/brew/cargoインストールで代替しない。
 - READMEとdocsを先に読み、他の作業の変更を上書きしない。必要なら同一repoのworktreeで分離する。
 - 公式記載、投稿者の申告、再現確認を区別。公式資料から動作確認済みを捏造しない。機種/OS/アプリ/ファームウェアの不明値、未知構成、期限切れは未確認表示。売上・利用者・購入数の未測定値はnull。
 - 公開資料の閲覧と再利用許諾を区別する。Open Icecatは今回のAI加工基盤に使わない。メーカーの文章・画像をコピーせず、少量の事実の要約と参照先を残す。
-- 検証: `nix develop -c node --test tests/*.test.mjs`。ローカルUIを実際に操作して主要導線・モバイル表示・キーボード・未知条件を確認する。公開準備は `nix develop -c env WRANGLER_SEND_METRICS=false wrangler deploy --dry-run` のみ。成功した検証だけ記録。
+- 検証: `nix develop -c node --test tests/*.test.mjs`。Actions は `nix develop -c actionlint .github/workflows/pages.yml`。ローカルUIを実際に操作して主要導線・モバイル表示・キーボード・未知条件を確認する。Cloudflare 構成を確認する場合の公開前検査は `nix develop -c env WRANGLER_SEND_METRICS=false wrangler deploy --dry-run`。実配備は承認された公開先・対象 revision を確認して行い、成功した検証だけ記録する。
 - 検証期間・母数・採否条件はdocs/business.md。需要根拠が揃う前に本格的なアカウント/決済/DB/AI検索を増やさない。
